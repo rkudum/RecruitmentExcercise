@@ -4,6 +4,13 @@ import ufo.dto.UfoSighting;
 
 import java.util.List;
 
+
+/**
+ * TODO://Few suggestions
+ * <ul>
+ *     <li>The getAllSightings() and search() should give a Set rather than a List to ensure unique sightings and eliminate duplicates</li>
+ * </ul>
+ */
 public interface UfoSightingService {
 
 
