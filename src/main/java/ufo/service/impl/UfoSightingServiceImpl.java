@@ -1,5 +1,7 @@
 package ufo.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ufo.dto.UfoSighting;
 import ufo.service.UfoSightingService;
 import ufo.util.DateUtil;
@@ -11,12 +13,11 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class UfoSightingServiceImpl implements UfoSightingService {
-    private static final Logger LOG = Logger.getLogger(UfoSightingServiceImpl.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(UfoSightingServiceImpl.class.getName());
     private static final Function<String, String> NULLSAFEGET = s -> s == null ? "" : s;
 
     private final Path ufoFilePath;
@@ -61,7 +62,7 @@ public class UfoSightingServiceImpl implements UfoSightingService {
 
                         if (lineToken.length != 6) {
                             sightingErrorRepository.offer(Stream.of(lineToken).collect(Collectors.joining(",")));
-                            //LOG.warning(() -> String.format("The UFO entry in file has %d entries (hence skipped)", lineToken.length));
+                            LOG.info("The UFO entry in file has {} entries (hence skipped)", lineToken.length);
                             return null;
                         }
 
@@ -69,7 +70,7 @@ public class UfoSightingServiceImpl implements UfoSightingService {
                     })
                     .collect(Collectors.toList());
         } catch (IOException ioe) {
-            LOG.severe("Error whilst reading feed file");
+            LOG.error("Error whilst reading feed file");
             throw new RuntimeException("Error whilst reading feed file", ioe);
         }
 
