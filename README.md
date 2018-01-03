@@ -44,3 +44,16 @@ Git Pull on our repo
 Clean the project (don't submit the target folder)
 
 Remove the tsv file (Limited inbox, sorry)
+
+
+### Developer Comments
+
+- I have overridden toString(), hashCode() and equals() methods on the DTO class for easy testing and object comparison and debugging.
+- Would have liked to throw an Service/Application exception, but this means changing the service interface.
+    Hence throwing an Runtime exception from the service implementation methods.
+- Unit testing of DAO with Mockito was proving tricky. I have applied Single responsibility principle and extracted business logic to the
+    Mapper class to enable unit testing. The rest of the DAO code is covered in integation tests
+- Integration tests specified in Objective 1 above is written in ufo.service.impl.UfoSightingServiceImplTest with test methods having
+    "IntegrationTest" suffix.
+- To speed up data load and search, I have used parallel stream provided by Java8. To further improve speed of search, we can consider loading
+    the data into a map of maps (keyed on year followed by key on month).
