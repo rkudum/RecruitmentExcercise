@@ -28,7 +28,14 @@ public class UfoSightingServiceImpl implements UfoSightingService {
 
     @Override
     public List<UfoSighting> search(int yearSeen, int monthSeen) {
+
+        String normalisedYear = String.valueOf(yearSeen);
         String normalisedMonth = String.format("%02d", monthSeen);
+
+        if(yearSeen<0 || monthSeen<0 || normalisedYear.length()!=4 || normalisedMonth.length()!=2){
+            throw new RuntimeException(String.format("Invalid input for search : [%s, %s]", normalisedYear, normalisedMonth));
+        }
+
         List<UfoSighting> allSightings;
         try {
             allSightings = dao.getAllSightings();

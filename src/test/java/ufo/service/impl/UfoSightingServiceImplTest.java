@@ -66,6 +66,55 @@ public class UfoSightingServiceImplTest {
     }
 
     @Test
+    public void search_InvalidYear() throws Exception {
+        UfoSightingService service = new UfoSightingServiceImpl(null);
+        try {
+            service.search(1, 2);
+            Assert.fail("Expected runtime exception not thrown");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+            Assert.assertTrue(e.getMessage().startsWith("Invalid input for search"));
+        }
+
+        try {
+            service.search(20111, 2);
+            Assert.fail("Expected runtime exception not thrown");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+            Assert.assertTrue(e.getMessage().startsWith("Invalid input for search"));
+        }
+
+        try {
+            service.search(-2011, 2);
+            Assert.fail("Expected runtime exception not thrown");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+            Assert.assertTrue(e.getMessage().startsWith("Invalid input for search"));
+        }
+    }
+
+    @Test
+    public void search_InvalidMonth() throws Exception {
+        UfoSightingService service = new UfoSightingServiceImpl(null);
+        try {
+            service.search(2018, 222);
+            Assert.fail("Expected runtime exception not thrown");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+            Assert.assertTrue(e.getMessage().startsWith("Invalid input for search"));
+        }
+
+        try {
+            service.search(2018, -22);
+            Assert.fail("Expected runtime exception not thrown");
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof RuntimeException);
+            Assert.assertTrue(e.getMessage().startsWith("Invalid input for search"));
+        }
+    }
+
+
+    @Test
     public void search_FindMatchingData() throws Exception {
         UfoSightingDAO dao = Mockito.mock(UfoSightingDAO.class);
         List<UfoSighting> mockUfoSightings = buildMockSightings();
