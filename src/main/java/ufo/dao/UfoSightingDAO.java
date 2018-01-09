@@ -4,9 +4,10 @@ import ufo.dto.UfoSighting;
 import ufo.exception.ServiceException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UfoSightingDAO {
 
-    List<UfoSighting> getAllSightings() throws ServiceException;
+    Map<String, List<UfoSighting>> getAllSightings() throws ServiceException;
 
 }

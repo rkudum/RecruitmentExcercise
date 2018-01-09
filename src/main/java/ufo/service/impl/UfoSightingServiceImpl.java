@@ -5,7 +5,9 @@ import ufo.dto.UfoSighting;
 import ufo.exception.ServiceException;
 import ufo.service.UfoSightingService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UfoSightingServiceImpl implements UfoSightingService {
@@ -20,7 +22,12 @@ public class UfoSightingServiceImpl implements UfoSightingService {
     @Override
     public List<UfoSighting> getAllSightings() {
         try {
-            return dao.getAllSightings();
+            Map<String, List<UfoSighting>> allSightings = dao.getAllSightings();
+            List<UfoSighting> allSightingsRaw = new ArrayList();
+            for (String key:allSightings.keySet()) {
+                allSightingsRaw.addAll(allSightings.get(key));
+            }
+            return allSightingsRaw;
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
@@ -38,11 +45,10 @@ public class UfoSightingServiceImpl implements UfoSightingService {
 
         List<UfoSighting> allSightings;
         try {
-            allSightings = dao.getAllSightings();
+            return dao.getAllSightings().get(normalisedYear+normalisedMonth);
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
-        return allSightings.parallelStream().filter(aSighting -> aSighting.getDateSeen().length() > YEAR_AND_MONTH_LENGTH && aSighting.getDateSeen().startsWith(String.valueOf(yearSeen) + normalisedMonth)).collect(Collectors.toList());
     }
 
 }
