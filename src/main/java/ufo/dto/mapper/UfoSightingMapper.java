@@ -4,9 +4,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ufo.dto.UfoSighting;
 
+import java.util.Arrays;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 
 public class UfoSightingMapper implements Function<String, UfoSighting> {
+    @Override
+    public <V> Function<V, UfoSighting> compose(Function<? super V, ? extends String> before) {
+        return null;
+    }
+
+    @Override
+    public <V> Function<String, V> andThen(Function<? super UfoSighting, ? extends V> after) {
+        return null;
+    }
 
     private static final int MIN_NO_OF_TOKENS = 6;
     private static final int DATE_SEEN_INDEX = 0;
@@ -32,7 +44,10 @@ public class UfoSightingMapper implements Function<String, UfoSighting> {
             String placeSeen = lineTokens[PLACE_SEEN_INDEX].trim();
             String shape = lineTokens[SHAPE_INDEX].trim();
             String duration = lineTokens[SEEN_DURATION_INDEX].trim();
-            String description = lineTokens[DESCRIPTION_INDEX].trim();
+
+            BinaryOperator<String> concat = (a,b)->a+b;
+            String description = Arrays.stream(lineTokens).skip(DESCRIPTION_INDEX).reduce("", concat).trim();
+
             ufoSighting = new UfoSighting(dateSeen, dateReported, placeSeen, shape, duration, description);
         }
         return ufoSighting;

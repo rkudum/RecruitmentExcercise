@@ -55,6 +55,9 @@ public class UfoSightingServiceImplTest {
 
         allSightings = service.search(2010, 8);
         assertEquals(410, allSightings.size());
+
+        allSightings = service.search(1995, 10);
+        assertEquals(107, allSightings.size());
     }
 
     @Test
